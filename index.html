@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primo · Cap IA</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0E0E0B;
+    --bg2: #141410;
+    --bg3: #1A1A14;
+    --bg4: #222218;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --gold: #E8C547;
+    --gold-soft: rgba(232,197,71,0.08);
+    --gold-mid: rgba(232,197,71,0.15);
+    --text1: #F0EDE4;
+    --text2: #999989;
+    --text3: #555548;
+    --green: #4CAF7D;
+    --green-soft: rgba(76,175,125,0.1);
+    --amber: #E8A547;
+    --amber-soft: rgba(232,165,71,0.1);
+    --red: #E05252;
+    --red-soft: rgba(224,82,82,0.1);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text1);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 28px 40px 24px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--gold);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0E0E0B;
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+
+  .header-text h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text1);
+    line-height: 1;
+    letter-spacing: -0.3px;
+  }
+
+  .header-text p {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 3px;
+    letter-spacing: 0.3px;
+    font-weight: 400;
+  }
+
+  .status-dot {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.75); }
+  }
+
+  main {
+    flex: 1;
+    padding: 48px 40px;
+    max-width: 820px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .welcome { margin-bottom: 48px; }
+
+  .welcome h2 {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    color: var(--text1);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+
+  .welcome h2 span { color: var(--gold); }
+
+  .welcome p {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.7;
+    max-width: 480px;
+    font-weight: 300;
+  }
+
+  .input-zone {
+    background: var(--bg2);
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .input-zone:focus-within { border-color: rgba(232,197,71,0.35); }
+
+  .input-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+
+  .url-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .url-input {
+    flex: 1;
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text1);
+    outline: none;
+    transition: border-color 0.2s;
+    font-weight: 300;
+  }
+
+  .url-input::placeholder { color: var(--text3); }
+  .url-input:focus { border-color: rgba(232,197,71,0.4); }
+
+  .sector-row {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sector-chip {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+  }
+
+  .sector-chip:hover, .sector-chip.active {
+    background: var(--gold-soft);
+    border-color: rgba(232,197,71,0.3);
+    color: var(--gold);
+  }
+
+  .analyze-btn {
+    background: var(--gold);
+    color: #0E0E0B;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 13px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    letter-spacing: 0.1px;
+  }
+
+  .analyze-btn:hover { background: #f0d060; transform: translateY(-1px); }
+  .analyze-btn:active { transform: translateY(0); }
+  .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .hint {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 8px;
+    font-weight: 300;
+  }
+
+  .loading-zone {
+    display: none;
+    padding: 48px 0;
+    text-align: center;
+  }
+
+  .loading-ring {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto 24px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-message {
+    font-size: 14px;
+    color: var(--text2);
+    font-weight: 300;
+    min-height: 22px;
+    transition: opacity 0.3s;
+  }
+
+  .results-zone {
+    display: none;
+    animation: fadeUp 0.4s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-block {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .block-header {
+    padding: 18px 24px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .block-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .block-icon.score { background: var(--gold-soft); color: var(--gold); }
+  .block-icon.fiche { background: rgba(100,130,255,0.1); color: #8899ff; }
+  .block-icon.email { background: var(--green-soft); color: var(--green); }
+
+  .block-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text1);
+    letter-spacing: 0.2px;
+  }
+
+  .block-subtitle {
+    font-size: 11px;
+    color: var(--text3);
+    margin-left: auto;
+    font-weight: 300;
+  }
+
+  .block-body { padding: 24px; }
+
+  .score-display {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .score-number {
+    font-family: 'EB Garamond', serif;
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .score-number span {
+    font-size: 24px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .score-meta { flex: 1; min-width: 200px; }
+
+  .reco-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .reco-badge.go { background: var(--green-soft); color: var(--green); border: 0.5px solid rgba(76,175,125,0.25); }
+  .reco-badge.watch { background: var(--amber-soft); color: var(--amber); border: 0.5px solid rgba(232,165,71,0.25); }
+  .reco-badge.pass { background: var(--red-soft); color: var(--red); border: 0.5px solid rgba(224,82,82,0.25); }
+
+  .signal-text {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .score-bars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .score-bar-label {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 6px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+
+  .score-bar-track {
+    height: 4px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0;
+  }
+
+  .score-bar-val {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  .divider { height: 0.5px; background: var(--border); margin: 20px 0; }
+
+  .justif {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .workflow-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .workflow-item {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+
+  .workflow-task {
+    font-size: 13px;
+    color: var(--text1);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .workflow-auto {
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .workflow-auto::before { content: '→ '; color: var(--gold); }
+
+  .maturity-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 0.5px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .maturity-label { font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0; }
+
+  .maturity-dots { display: flex; gap: 5px; }
+
+  .maturity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bg4);
+    border: 0.5px solid var(--border2);
+  }
+
+  .maturity-dot.filled { background: var(--gold); border-color: var(--gold); }
+
+  .maturity-just { font-size: 12px; color: var(--text3); font-weight: 300; }
+
+  .angle-box {
+    background: var(--gold-soft);
+    border: 0.5px solid rgba(232,197,71,0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .angle-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .angle-text { font-size: 14px; color: var(--text1); line-height: 1.6; font-weight: 400; }
+
+  .email-block {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .email-subject {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .email-subject strong { color: var(--text2); font-weight: 500; }
+
+  .email-body {
+    padding: 16px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-weight: 300;
+  }
+
+  .email-actions {
+    padding: 12px 16px;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn-copy {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 0.5px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-copy:hover { background: var(--bg4); color: var(--text1); }
+  .btn-copy.copied { color: var(--green); border-color: rgba(76,175,125,0.3); }
+
+  .btn-reset {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 0.5px solid rgba(232,197,71,0.2);
+    background: var(--gold-soft);
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 400;
+    margin-left: auto;
+  }
+
+  .btn-reset:hover { background: var(--gold-mid); }
+
+  .error-zone {
+    display: none;
+    background: var(--red-soft);
+    border: 0.5px solid rgba(224,82,82,0.2);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #ff8888;
+    margin-top: 12px;
+    font-weight: 300;
+  }
+
+  footer {
+    padding: 20px 40px;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer p { font-size: 11px; color: var(--text3); font-weight: 300; }
+  footer a { color: var(--text3); text-decoration: none; transition: color 0.15s; }
+  footer a:hover { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    main { padding: 32px 20px; }
+    header { padding: 20px; }
+    footer { padding: 16px 20px; flex-direction: column; gap: 8px; text-align: center; }
+    .url-row { flex-direction: column; }
+    .analyze-btn { width: 100%; }
+    .score-bars { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">P</div>
+  <div class="header-text">
+    <h1>Primo</h1>
+    <p>Agent de prospection · Cap IA</p>
+  </div>
+  <div class="status-dot">
+    <div class="dot"></div>
+    Opérationnel
+  </div>
+</header>
+
+<main>
+
+  <div class="welcome" id="welcomeBlock">
+    <h2>Qui prospecte-t-on<br><span>aujourd'hui ?</span></h2>
+    <p>Donne-moi l'URL d'une entreprise. Je l'analyse, je score le potentiel, je prépare l'angle d'approche et je rédige l'email.</p>
+  </div>
+
+  <div class="input-zone" id="inputZone">
+    <div class="input-label">Site de l'entreprise</div>
+    <div class="url-row">
+      <input type="url" class="url-input" id="urlInput" placeholder="https://exemple-dmc.fr" />
+      <button class="analyze-btn" id="analyzeBtn" onclick="analyze()">Analyser →</button>
+    </div>
+    <div class="sector-row" id="sectorRow">
+      <button class="sector-chip active" data-sector="DMC / Tourisme d'affaires">DMC</button>
+      <button class="sector-chip" data-sector="Agence événementielle">Événementiel</button>
+      <button class="sector-chip" data-sector="Agence de voyages d'affaires">Voyages d'affaires</button>
+      <button class="sector-chip" data-sector="Hôtellerie / Hébergement">Hôtellerie</button>
+      <button class="sector-chip" data-sector="Autre">Autre</button>
+    </div>
+    <div class="hint">Primo analyse le site, score le potentiel et rédige l'email via Make.</div>
+  </div>
+
+  <div class="error-zone" id="errorZone"></div>
+
+  <div class="loading-zone" id="loadingZone">
+    <div class="loading-ring"></div>
+    <div class="loading-message" id="loadingMsg">Primo analyse le site...</div>
+  </div>
+
+  <div class="results-zone" id="resultsZone">
+
+    <div class="result-block">
+      <div class="block-header">
+        <div class="block-icon score">◆</div>
+        <div class="block-title">Score de pertinence</div>
+        <div class="block-subtitle" id="profilBadge"></div>
+      </div>
+      <div class="block-body">
+        <div class="score-display">
+          <div class="score-number" id="scoreNumber">—<span>/10</span></div>
+          <div class="score-meta">
+            <div class="reco-badge go" id="recoBadge">—</div>
+            <div class="signal-text" id="signalText">—</div>
+          </div>
+        </div>
+        <div class="score-bars">
+          <div class="score-bar-item">
+            <div class="score-bar-label">Potentiel ROI</div>
+            <div class="score-bar-track"><div class="score-bar-fill" id="bar-roi"></div></div>
+            <div class="score-bar-val" id="val-roi">—</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-label">Similarité ROB</div>
+            <div class="score-bar-track"><div class="score-bar-fill" id="bar-sim"></div></div>
+            <div class="score-bar-val" id="val-sim">—</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-label">Signal d'intention</div>
+            <div class="score-bar-track"><div class="score-bar-fill" id="bar-sig"></div></div>
+            <div class="score-bar-val" id="val-sig">—</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-label">Accessibilité</div>
+            <div class="score-bar-track"><div class="score-bar-fill" id="bar-acc"></div></div>
+            <div class="score-bar-val" id="val-acc">—</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="justif" id="justifText">—</div>
+      </div>
+    </div>
+
+    <div class="result-block">
+      <div class="block-header">
+        <div class="block-icon fiche">≡</div>
+        <div class="block-title">Fiche prospect</div>
+        <div class="block-subtitle" id="maturiteLabel"></div>
+      </div>
+      <div class="block-body">
+        <div class="angle-box">
+          <div class="angle-label">Angle d'entrée</div>
+          <div class="angle-text" id="angleText">—</div>
+        </div>
+        <div class="workflow-list" id="workflowList"></div>
+        <div class="maturity-row">
+          <div class="maturity-label">Maturité digitale</div>
+          <div class="maturity-dots" id="maturityDots"></div>
+          <div class="maturity-just" id="maturityJust">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-block">
+      <div class="block-header">
+        <div class="block-icon email">✉</div>
+        <div class="block-title">Email prêt à envoyer</div>
+        <div class="block-subtitle">Personnalisé · à relire avant envoi</div>
+      </div>
+      <div class="block-body" style="padding: 0;">
+        <div class="email-block">
+          <div class="email-subject">Objet : <strong id="emailSubject">—</strong></div>
+          <div class="email-body" id="emailBody">—</div>
+          <div class="email-actions">
+            <button class="btn-copy" id="copyBtn" onclick="copyEmail()">⎘ Copier l'email</button>
+            <button class="btn-copy" onclick="copySubject()">⎘ Objet seul</button>
+            <button class="btn-reset" onclick="reset()">Nouveau prospect →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <p>Primo · Cap IA · <a href="https://cap-ia.pro" target="_blank">cap-ia.pro</a></p>
+  <p>antoine@cap-ia.pro · +33 6 29 31 21 21</p>
+</footer>
+
+<script>
+  // ─── CONFIG ───────────────────────────────────────────────────────────────
+  // Remplace cette URL par l'URL de ton webhook Make une fois le scénario créé
+  const MAKE_WEBHOOK_URL = 'COLLER_ICI_URL_WEBHOOK_MAKE';
+  // ──────────────────────────────────────────────────────────────────────────
+
+  let selectedSector = "DMC / Tourisme d'affaires";
+  let currentEmailSubject = '';
+  let currentEmailBody = '';
+
+  document.querySelectorAll('.sector-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.sector-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      selectedSector = chip.dataset.sector;
+    });
+  });
+
+  document.getElementById('urlInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') analyze();
+  });
+
+  const loadingMessages = [
+    'Primo récupère le contenu du site...',
+    'Analyse des workflows métier en cours...',
+    'Scoring de la pertinence...',
+    'Détection des signaux d\'intention...',
+    'Génération de l\'angle d\'approche...',
+    'Rédaction de l\'email personnalisé...',
+    'Dernières vérifications...'
+  ];
+
+  let msgIndex = 0;
+  let msgInterval = null;
+
+  function startLoadingMessages() {
+    msgIndex = 0;
+    document.getElementById('loadingMsg').textContent = loadingMessages[0];
+    msgInterval = setInterval(() => {
+      msgIndex = (msgIndex + 1) % loadingMessages.length;
+      const el = document.getElementById('loadingMsg');
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.textContent = loadingMessages[msgIndex];
+        el.style.opacity = '1';
+      }, 200);
+    }, 2200);
+  }
+
+  function stopLoadingMessages() {
+    if (msgInterval) clearInterval(msgInterval);
+  }
+
+  async function analyze() {
+    const url = document.getElementById('urlInput').value.trim();
+
+    if (!url) { showError('Merci de renseigner l\'URL du site à analyser.'); return; }
+    if (!url.startsWith('http')) { showError('L\'URL doit commencer par http:// ou https://'); return; }
+    if (MAKE_WEBHOOK_URL === 'COLLER_ICI_URL_WEBHOOK_MAKE') {
+      showError('Configure d\'abord l\'URL du webhook Make dans le fichier index.html (variable MAKE_WEBHOOK_URL).');
+      return;
+    }
+
+    hideError();
+    document.getElementById('analyzeBtn').disabled = true;
+    document.getElementById('inputZone').style.opacity = '0.5';
+    document.getElementById('welcomeBlock').style.display = 'none';
+    document.getElementById('loadingZone').style.display = 'block';
+    document.getElementById('resultsZone').style.display = 'none';
+    startLoadingMessages();
+
+    try {
+      const response = await fetch(MAKE_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url, secteur: selectedSector })
+      });
+
+      if (!response.ok) throw new Error(`Erreur Make : ${response.status}`);
+
+      const result = await response.json();
+      stopLoadingMessages();
+      renderResults(result);
+
+    } catch (err) {
+      stopLoadingMessages();
+      document.getElementById('loadingZone').style.display = 'none';
+      document.getElementById('inputZone').style.opacity = '1';
+      document.getElementById('welcomeBlock').style.display = 'block';
+      document.getElementById('analyzeBtn').disabled = false;
+      showError('Erreur lors de la connexion à Make. Vérifie que le scénario est actif et que l\'URL est correcte.');
+      console.error(err);
+    }
+  }
+
+  function renderResults(r) {
+    document.getElementById('loadingZone').style.display = 'none';
+    document.getElementById('inputZone').style.display = 'none';
+
+    document.getElementById('scoreNumber').innerHTML = `${r.score_global}<span>/10</span>`;
+    document.getElementById('profilBadge').textContent = r.profil;
+
+    const recoBadge = document.getElementById('recoBadge');
+    recoBadge.textContent = r.recommandation;
+    recoBadge.className = 'reco-badge';
+    if (r.recommandation === 'CONTACTER MAINTENANT') recoBadge.classList.add('go');
+    else if (r.recommandation === 'SURVEILLER') recoBadge.classList.add('watch');
+    else recoBadge.classList.add('pass');
+
+    document.getElementById('signalText').textContent =
+      r.signal_detecte && r.signal_detecte !== 'AUCUN'
+        ? `Signal : ${r.signal_detecte}`
+        : 'Aucun signal d\'intention détecté';
+
+    document.getElementById('justifText').textContent = r.justification;
+
+    const d = r.scores_detail;
+    setTimeout(() => {
+      document.getElementById('bar-roi').style.width = `${d.potentiel_roi * 10}%`;
+      document.getElementById('bar-sim').style.width = `${d.similarite_rob * 10}%`;
+      document.getElementById('bar-sig').style.width = `${d.signal_intention * 10}%`;
+      document.getElementById('bar-acc').style.width = `${d.accessibilite * 10}%`;
+    }, 100);
+
+    document.getElementById('val-roi').textContent = `${d.potentiel_roi}/10`;
+    document.getElementById('val-sim').textContent = `${d.similarite_rob}/10`;
+    document.getElementById('val-sig').textContent = `${d.signal_intention}/10`;
+    document.getElementById('val-acc').textContent = `${d.accessibilite}/10`;
+
+    document.getElementById('angleText').textContent = r.angle_approche;
+
+    const workflowList = document.getElementById('workflowList');
+    workflowList.innerHTML = '';
+    (r.workflows_manuels || []).forEach(w => {
+      const div = document.createElement('div');
+      div.className = 'workflow-item';
+      div.innerHTML = `<div class="workflow-task">${w.tache}</div><div class="workflow-auto">${w.automatisation_possible}</div>`;
+      workflowList.appendChild(div);
+    });
+
+    const dots = document.getElementById('maturityDots');
+    dots.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const dot = document.createElement('div');
+      dot.className = `maturity-dot${i <= r.maturite_digitale ? ' filled' : ''}`;
+      dots.appendChild(dot);
+    }
+    document.getElementById('maturityJust').textContent = r.maturite_justification;
+    document.getElementById('maturiteLabel').textContent = `Maturité ${r.maturite_digitale}/5`;
+
+    currentEmailSubject = r.email_objet;
+    currentEmailBody = r.email_corps;
+    document.getElementById('emailSubject').textContent = r.email_objet;
+    document.getElementById('emailBody').textContent = r.email_corps;
+
+    document.getElementById('resultsZone').style.display = 'block';
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+
+  function copyEmail() {
+    const text = `Objet : ${currentEmailSubject}\n\n${currentEmailBody}`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✓ Copié';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = "⎘ Copier l'email";
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  function copySubject() {
+    navigator.clipboard.writeText(currentEmailSubject);
+  }
+
+  function reset() {
+    document.getElementById('resultsZone').style.display = 'none';
+    document.getElementById('inputZone').style.display = 'block';
+    document.getElementById('inputZone').style.opacity = '1';
+    document.getElementById('welcomeBlock').style.display = 'block';
+    document.getElementById('urlInput').value = '';
+    document.getElementById('urlInput').focus();
+    hideError();
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorZone');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function hideError() {
+    document.getElementById('errorZone').style.display = 'none';
+  }
+</script>
+</body>
+</html>
