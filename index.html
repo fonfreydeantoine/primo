@@ -786,11 +786,15 @@
     startLoadingMessages();
 
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 90000);
       const response = await fetch(MAKE_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url, secteur: selectedSector })
+        body: JSON.stringify({ url: url, secteur: selectedSector }),
+        signal: controller.signal
       });
+      clearTimeout(timeout);
 
       if (!response.ok) throw new Error(`Erreur Make : ${response.status}`);
 
