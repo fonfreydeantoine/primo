@@ -794,7 +794,9 @@
 
       if (!response.ok) throw new Error(`Erreur Make : ${response.status}`);
 
-      const result = await response.json();
+      const text = await response.text();
+      const clean = text.replace(/```json|```/g, '').trim();
+      const result = JSON.parse(clean);
       stopLoadingMessages();
       renderResults(result);
 
